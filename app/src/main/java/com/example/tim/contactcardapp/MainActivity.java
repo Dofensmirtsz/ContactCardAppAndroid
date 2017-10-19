@@ -1,12 +1,10 @@
-package com.example.tim.contactcardappandroid;
+package com.example.tim.contactcardapp;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-
-import com.example.tim.contactcardapp.R;
 
 import java.util.ArrayList;
 import java.util.List;

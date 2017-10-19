@@ -1,4 +1,4 @@
-package com.example.tim.contactcardappandroid;
+package com.example.tim.contactcardapp;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

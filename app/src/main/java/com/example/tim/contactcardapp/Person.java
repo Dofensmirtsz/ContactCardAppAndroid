@@ -1,4 +1,4 @@
-package com.example.tim.contactcardappandroid;
+package com.example.tim.contactcardapp;
 
 import android.os.Parcel;
 import android.os.Parcelable;

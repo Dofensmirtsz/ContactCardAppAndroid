@@ -1,4 +1,4 @@
-package com.example.tim.contactcardappandroid;
+package com.example.tim.contactcardapp;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.example.tim.contactcardapp.R;
 
 import java.util.List;
 

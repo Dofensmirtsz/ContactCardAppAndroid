@@ -1,4 +1,4 @@
-package com.example.tim.contactcardappandroid;
+package com.example.tim.contactcardapp;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,8 +9,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import com.example.tim.contactcardapp.R;
 
 public class LoginActivity extends AppCompatActivity {
 

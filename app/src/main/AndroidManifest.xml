@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.tim.contactcardappandroid">
+    package="com.example.tim.contactcardapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -11,10 +11,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.example.tim.contactcardappandroid.MainActivity">
+        <activity android:name="com.example.tim.contactcardapp.MainActivity">
 </activity>
-        <activity android:name="com.example.tim.contactcardappandroid.ProfilePageActivity" />
-        <activity android:name="com.example.tim.contactcardappandroid.LoginActivity">
+        <activity android:name="com.example.tim.contactcardapp.ProfilePageActivity" />
+        <activity android:name="com.example.tim.contactcardapp.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
