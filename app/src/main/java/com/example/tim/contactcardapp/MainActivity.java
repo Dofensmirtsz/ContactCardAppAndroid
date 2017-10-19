@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void clearLocalPreferences(){
-        SharedPreferences settings = getSharedPreferences(BuildConfig.PREFS_NAME, 0);
+        SharedPreferences settings = getSharedPreferences("LoginPreferences", 0);
         SharedPreferences.Editor editor = settings.edit();
         editor.putString("USERNAME", "");
         editor.putString("PASSWORD", "");

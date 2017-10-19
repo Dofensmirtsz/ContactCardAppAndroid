@@ -2,6 +2,7 @@ package com.example.tim.contactcardapp;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -12,7 +13,6 @@ import android.widget.TextView;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private static final String PREFS_NAME = "LoginPreferences";
     String username;
     String password;
 
@@ -22,7 +22,8 @@ public class LoginActivity extends AppCompatActivity {
     Button login;
     TextView errorMessage;
 
-    Intent intent = new Intent();
+    private static final String PREFS_NAME = "LoginPreferences";
+
 
 
     @Override
@@ -30,36 +31,52 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+
+
+
+        boolean rememberCredentials = settings.getBoolean("REMEMBER_CREDENTIALS", false);
+
+        if(rememberCredentials){
+//            username = settings.getString("USERNAME", "");
+//            password = settings.getString("PASSWORD", "");
+//            usernameEditText.setText(username);
+//            passwordEditText.setText(password);
+//            saveCredentials.setChecked(rememberCredentials);
+            autoLogin();
+        } else{
+            initialiseLoginScreen();
+            login.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v){
+                    if(checkValidLogin()){
+                        storeSettings();
+                        goToMainActivity();
+                    }
+                }
+            });
+        }
+
+
+    }
+
+    private void autoLogin(){
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+
+        username = settings.getString("USERNAME", "");
+        password = settings.getString("PASSWORD", "");
+        goToMainActivity();
+    }
+
+    private void initialiseLoginScreen(){
         usernameEditText = (EditText) findViewById(R.id.username);
         passwordEditText = (EditText) findViewById(R.id.password);
         saveCredentials = (CheckBox) findViewById(R.id.saveCredentials);
         login = (Button) findViewById(R.id.login);
         errorMessage = (TextView) findViewById(R.id.errorMessage);
 
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-
-        boolean rememberCredentials = settings.getBoolean("REMEMBER_CREDENTIALS", false);
-
-        if(rememberCredentials){
-            username = settings.getString("USERNAME", "");
-            password = settings.getString("PASSWORD", "");
-            usernameEditText.setText(username);
-            passwordEditText.setText(password);
-            saveCredentials.setChecked(rememberCredentials);
-        } else{
-            username = "";
-            password = "";
-        }
-
-        login.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                if(checkValidLogin()){
-                    storeSettings();
-                    goToMainActivity();
-                }
-            }
-        });
+        username = "";
+        password = "";
     }
 
     private void storeSettings() {
@@ -70,12 +87,15 @@ public class LoginActivity extends AppCompatActivity {
         editor.putBoolean("REMEMBER_CREDENTIALS", saveCredentials.isChecked());
 
         editor.apply();
+
+        username = usernameEditText.getText().toString();
+        password = passwordEditText.getText().toString();
     }
 
     private void goToMainActivity(){
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.putExtra("username", usernameEditText.getText().toString());
+        intent.putExtra("username", username);
         startActivity(intent);
         finish();
     }
