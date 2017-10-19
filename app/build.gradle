@@ -10,6 +10,8 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        buildConfigField 'String', 'API_URL', '"https://randomuser.me/api/"'
+        buildConfigField 'String', 'PREFS_NAME', '"LoginPreferences"'
     }
     buildTypes {
         release {
@@ -38,4 +40,7 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:4.0.0'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0'
+
+    compile 'com.squareup.retrofit2:retrofit:2.3.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
 }

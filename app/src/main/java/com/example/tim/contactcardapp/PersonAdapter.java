@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.tim.contactcardapp.model.Person;
 
 import java.util.List;
 
@@ -35,12 +36,12 @@ public class PersonAdapter extends RecyclerView.Adapter<PersonAdapter.ViewHolder
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final Person item = getItem(position);
 
-        holder.firstName.setText(item.firstName);
-        holder.lastName.setText(item.lastName);
-        holder.email.setText(item.email);
+        holder.firstName.setText(item.getName().getFirst());
+        holder.lastName.setText(item.getName().getLast());
+        holder.email.setText(item.getEmail());
 
         Glide.with(holder.itemView.getContext())
-                .load(item.image)
+                .load(item.getPicture().getLarge())
                 .apply(RequestOptions.circleCropTransform())
                 .into(holder.profilePicture);
 

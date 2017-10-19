@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.tim.contactcardapp.model.Person;
 
 /**
  * Created by tim on 5-9-2017.
@@ -35,7 +36,7 @@ public class ProfilePageActivity extends AppCompatActivity {
         Person person = getIntent().getParcelableExtra(PERSON);
 
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
-        getSupportActionBar().setTitle(person.firstName + " " + person.lastName);
+        getSupportActionBar().setTitle(person.getName().getFirst() + " " + person.getName().getLast());
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -45,11 +46,11 @@ public class ProfilePageActivity extends AppCompatActivity {
         ImageView profileImage = (ImageView) findViewById(R.id.profile_page_picture);
 
         if (person != null) {
-            firstName.setText(person.firstName);
-            lastName.setText(person.lastName);
-            email.setText(person.email);
+            firstName.setText(person.getName().getFirst());
+            lastName.setText(person.getName().getLast());
+            email.setText(person.getEmail());
             Glide.with(this)
-                    .load(person.image)
+                    .load(person.getPicture().getLarge())
                     .apply(RequestOptions.circleCropTransform())
                     .into(profileImage);
         }

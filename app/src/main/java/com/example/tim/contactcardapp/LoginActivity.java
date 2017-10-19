@@ -22,6 +22,9 @@ public class LoginActivity extends AppCompatActivity {
     Button login;
     TextView errorMessage;
 
+    Intent intent = new Intent();
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,6 +75,7 @@ public class LoginActivity extends AppCompatActivity {
     private void goToMainActivity(){
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra("username", usernameEditText.getText().toString());
         startActivity(intent);
         finish();
     }
