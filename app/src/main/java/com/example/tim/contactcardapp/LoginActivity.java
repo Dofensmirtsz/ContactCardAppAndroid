@@ -2,14 +2,20 @@ package com.example.tim.contactcardapp;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.example.tim.contactcardapp.data.local.UsersDBHelper;
+import com.example.tim.contactcardapp.data.model.User;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -22,6 +28,8 @@ public class LoginActivity extends AppCompatActivity {
     Button login;
     TextView errorMessage;
 
+    private UsersDBHelper usersDBHelper;
+
     private static final String PREFS_NAME = "LoginPreferences";
 
 
@@ -33,16 +41,16 @@ public class LoginActivity extends AppCompatActivity {
 
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
 
+        usersDBHelper = new UsersDBHelper(getApplicationContext(), null);
 
+        //Pre-made users.
+        //usersDBHelper.addUser(new User("tim","tim"));
+        //usersDBHelper.addUser(new User("hoi","123"));
+        //usersDBHelper.addUser(new User("username","password"));
 
         boolean rememberCredentials = settings.getBoolean("REMEMBER_CREDENTIALS", false);
 
         if(rememberCredentials){
-//            username = settings.getString("USERNAME", "");
-//            password = settings.getString("PASSWORD", "");
-//            usernameEditText.setText(username);
-//            passwordEditText.setText(password);
-//            saveCredentials.setChecked(rememberCredentials);
             autoLogin();
         } else{
             initialiseLoginScreen();
@@ -103,15 +111,34 @@ public class LoginActivity extends AppCompatActivity {
     private boolean checkValidLogin(){
         boolean valid = true;
 
+        usersDBHelper.printUsers();
 
+        List<User> userList = new ArrayList<User>();
+        userList = usersDBHelper.getUserList();
 
         if(usernameEditText.getText().length() == 0 && passwordEditText.getText().length() == 0){
             errorMessage.setText("Please insert credentials");
             valid = false;
         }
-        else if(usernameEditText.getText().length() == 0 || passwordEditText.getText().length() == 0){
-            errorMessage.setText("Invalid username or password.");
+        else if(passwordEditText.getText().length() == 0){
+            errorMessage.setText("Please insert a password");
             valid = false;
+        }
+        else if(usernameEditText.getText().length() == 0){
+            errorMessage.setText("Please insert a username");
+        }
+        else {
+            for(User u : userList){
+                Log.i("Login","Inserted username: " + usernameEditText.getText().toString() + "\tComparing username: " + u.getUsername());
+                Log.i("Login","Inserted password: " + passwordEditText.getText().toString() + "\tComparing password: " + u.getPassword());
+
+                if(usernameEditText.getText().toString().equals(u.getUsername()) && passwordEditText.getText().toString().equals(u.getPassword())){
+                    return true;
+                } else{
+                    errorMessage.setText("Invalid credentials");
+                    valid = false;
+                }
+            }
         }
 
 //        errorMessage.setText("Username '" + usernameEditText.getText() + "'");
