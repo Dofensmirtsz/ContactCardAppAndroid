@@ -5,4 +5,6 @@ package com.example.tim.contactcardapp.data.model;
  */
 
 public class User {
+
+
 }

@@ -5,4 +5,6 @@ package com.example.tim.contactcardapp.data;
  */
 
 public class DataManager {
+
+
 }
