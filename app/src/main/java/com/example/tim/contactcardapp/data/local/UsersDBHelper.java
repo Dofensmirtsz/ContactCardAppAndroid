@@ -68,6 +68,7 @@ public class UsersDBHelper extends SQLiteOpenHelper
 
     public void printUsers() {
         List<User> userList = new ArrayList<User>();
+        List<String> idList = new ArrayList<String>();
         String query = "SELECT * FROM " + TABLE_NAME;
 
         SQLiteDatabase db = this.getReadableDatabase();
@@ -79,29 +80,16 @@ public class UsersDBHelper extends SQLiteOpenHelper
                 user.setUsername(String.valueOf(cursor.getString(1)));
                 user.setPassword(String.valueOf(cursor.getString(2)));
                 userList.add(user);
+                idList.add(String.valueOf(cursor.getString(0)));
             } while (cursor.moveToNext());
         }
 
-        Log.i("SKR", "--------------------------------------------");
-        for (User u : userList){
-            Log.i("SKR", u.toString());
-            Log.i("SKR", "--------------------------------------------");
+        Log.i("USERLIST", "--------------------------------------------");
+
+        for(int i =0; i<userList.size(); i++){
+            Log.i("USERLIST",idList.get(i) + "  -  " + userList.get(i).toString());
+            Log.i("USERLIST", "--------------------------------------------");
         }
-
-        // return contact list
-
-//        SQLiteDatabase db = this.getReadableDatabase();
-//
-//        Cursor cursor = db.rawQuery(query_b, null);
-//
-//        cursor.moveToFirst();
-//        while(cursor.moveToNext() ) {
-//            Log.i("SKR", cursor.getString(cursor.getColumnIndex(COLUMN_USERNAME)));
-//            Log.i("SKR", cursor.getString(cursor.getColumnIndex(COLUMN_PASSWORD)));
-//            Log.i("SKR", "--------------------------------------------");
-//        }
-//
-//        db.close();
     }
 
     public List<User> getUserList(){
@@ -121,5 +109,22 @@ public class UsersDBHelper extends SQLiteOpenHelper
         }
 
         return userList;
+    }
+
+    //SELECT has to be 1 value;
+    public String getDBValue(String select, String where, String whereValue){
+        String result = "NO VALUE";
+        String query = "SELECT " + select + " FROM " + TABLE_NAME + " WHERE " + where + " = '" + whereValue + "'";
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        if(cursor.moveToFirst()) {
+            result = String.valueOf(cursor.getString(cursor.getColumnIndex(select)));
+        }
+
+        Log.i("getDBValue", "String from DB: " + result);
+
+        return result;
     }
 }

@@ -26,6 +26,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText passwordEditText;
     CheckBox saveCredentials;
     Button login;
+    Button register;
     TextView errorMessage;
 
     private UsersDBHelper usersDBHelper;
@@ -48,6 +49,9 @@ public class LoginActivity extends AppCompatActivity {
         //usersDBHelper.addUser(new User("hoi","123"));
         //usersDBHelper.addUser(new User("username","password"));
 
+        //usersDBHelper.printUsers();
+
+
         boolean rememberCredentials = settings.getBoolean("REMEMBER_CREDENTIALS", false);
 
         if(rememberCredentials){
@@ -63,9 +67,14 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 }
             });
+            register.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v){
+                    Intent intent = new Intent(LoginActivity.super.getApplication(), RegisterActivity.class);
+                    startActivity(intent);
+                }
+            });
         }
-
-
     }
 
     private void autoLogin(){
@@ -81,6 +90,7 @@ public class LoginActivity extends AppCompatActivity {
         passwordEditText = (EditText) findViewById(R.id.password);
         saveCredentials = (CheckBox) findViewById(R.id.saveCredentials);
         login = (Button) findViewById(R.id.login);
+        register = (Button)findViewById(R.id.register);
         errorMessage = (TextView) findViewById(R.id.errorMessage);
 
         username = "";
@@ -100,18 +110,8 @@ public class LoginActivity extends AppCompatActivity {
         password = passwordEditText.getText().toString();
     }
 
-    private void goToMainActivity(){
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.putExtra("username", username);
-        startActivity(intent);
-        finish();
-    }
-
     private boolean checkValidLogin(){
         boolean valid = true;
-
-        usersDBHelper.printUsers();
 
         List<User> userList = new ArrayList<User>();
         userList = usersDBHelper.getUserList();
@@ -128,21 +128,24 @@ public class LoginActivity extends AppCompatActivity {
             errorMessage.setText("Please insert a username");
         }
         else {
-            for(User u : userList){
-                Log.i("Login","Inserted username: " + usernameEditText.getText().toString() + "\tComparing username: " + u.getUsername());
-                Log.i("Login","Inserted password: " + passwordEditText.getText().toString() + "\tComparing password: " + u.getPassword());
-
-                if(usernameEditText.getText().toString().equals(u.getUsername()) && passwordEditText.getText().toString().equals(u.getPassword())){
-                    return true;
-                } else{
-                    errorMessage.setText("Invalid credentials");
-                    valid = false;
-                }
+            username = usernameEditText.getText().toString();
+            password = usersDBHelper.getDBValue("password","username", username);
+            if(password.equals(passwordEditText.getText().toString())){
+                return true;
+            } else {
+                errorMessage.setText("Invalid credentials");
+                valid = false;
             }
         }
 
-//        errorMessage.setText("Username '" + usernameEditText.getText() + "'");
-
         return valid;
+    }
+
+    private void goToMainActivity(){
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra("username", username);
+        startActivity(intent);
+        finish();
     }
 }
